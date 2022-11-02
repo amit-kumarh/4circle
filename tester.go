@@ -20,6 +20,8 @@ func readPos(scanner bufio.Scanner) string {
 	scanner.Scan()
 	position := scanner.Text()
 
+	scanner.Scan()
+	scanner.Text()
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
@@ -41,6 +43,6 @@ func main() {
 
 	fmt.Println("Position 1: ", readPos(*scanner))
 	// scanner.Scan()
-	// fmt.Println("Position 2: ", readPos(*scanner))
+	fmt.Println("Position 2: ", readPos(*scanner))
 	// scanner.Scan()
 }
