@@ -16,6 +16,11 @@ func Key(pos uint64, mask uint64) uint64 {
 	return pos + mask
 }
 
+func IsWinningMove(pos uint64, mask uint64, col int) bool {
+	test_pos, _ := Play(pos, mask, col)
+	return Aligned(test_pos)
+}
+
 func Aligned(pos uint64) bool {
 	// Horizontal
 	inter := pos & (pos >> 7)
