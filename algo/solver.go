@@ -12,17 +12,32 @@ type Position struct {
 	moveNumber int
 }
 
-func PossibleNonLosingMoves() Position {
+func Negamax(position Position) int {
+	// check for draw
+	// to do
 
-}
-
-func Negamax(position Position, alpha int, beta int) int {
-
-	if beta < alpha {
-		panic("Alpha should be less than beta!")
+	// checking if opponent can win next move
+	for i := 0; i < 7; i++ {
+		if canPlay(position.position, i) && IsWinningMove(position.position, position.mask, i) {
+			return 0 // 0 indicates that they can
+		}
 	}
 
-	position.moveNumber++ // increment number of nodes explored
+	bestScore := 0 // var to store best possible score
 
-	return -1
+	// look for best possible score, save that score in var
+	for i := 0; i < 7; i++ {
+		if canPlay(position.mask, i) {
+			opponentPlay := position
+			play(opponentPlay.position, opponentPlay.mask, i)
+
+			opponentScore := -Negamax(opponentPlay)
+
+			if opponentScore > bestScore {
+				bestScore = opponentScore
+			}
+		}
+	}
+
+	return bestScore
 }
