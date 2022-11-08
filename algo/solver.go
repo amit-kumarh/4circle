@@ -1,4 +1,4 @@
-package main
+package fourcircle
 
 // solver function takes the position and alpha-beta values and evaluates the score
 
@@ -6,38 +6,45 @@ package main
 // takes a position and returns the score of that position
 // then algo will pick position with greatest score.
 
-type Position struct {
-	position   uint64
-	mask       uint64
-	moveNumber int
-}
+const NUM_SPACES int = 42
 
-func Negamax(position Position) int {
+func Negamax(position Position, alpha int, beta int) int {
 	// check for draw
-	// to do
+	if position.moves == NUM_SPACES {
+		return 0
+	}
 
-	// checking if opponent can win next move
+	// checking if we can win next move
 	for i := 0; i < 7; i++ {
-		if canPlay(position.position, i) && IsWinningMove(position.position, position.mask, i) {
-			return 0 // 0 indicates that they can
+		if CanPlay(&position, i) && IsWinningMove(&position, i) {
+			return 21 - (position.moves / 2)
 		}
 	}
 
-	bestScore := 0 // var to store best possible score
+	max := 20 - (position.moves / 2)
+	if beta > max {
+		beta = max
+		if alpha >= beta {
+			return beta
+		}
+	}
 
 	// look for best possible score, save that score in var
 	for i := 0; i < 7; i++ {
-		if canPlay(position.mask, i) {
-			opponentPlay := position
-			play(opponentPlay.position, opponentPlay.mask, i)
+		if CanPlay(&position, i) {
+			to_check := position
+			Play(&to_check, i)
 
-			opponentScore := -Negamax(opponentPlay)
+			score := -Negamax(to_check, alpha, beta)
 
-			if opponentScore > bestScore {
-				bestScore = opponentScore
+			if score >= beta {
+				return beta
+			}
+			if score > alpha {
+				alpha = score
 			}
 		}
 	}
 
-	return bestScore
+	return alpha
 }

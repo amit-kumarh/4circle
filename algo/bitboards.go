@@ -8,7 +8,7 @@ type Position struct {
 	moves    int
 }
 
-func CanPlay(pos Position, col int) bool {
+func CanPlay(pos *Position, col int) bool {
 	return (pos.mask)&((1<<5)<<(col*7)) == 0
 }
 
