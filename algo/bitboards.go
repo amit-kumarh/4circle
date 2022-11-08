@@ -1,22 +1,22 @@
-package main
+package fourcircle
 
 import "fmt"
 
-func canPlay(mask uint64, col int) bool {
+func CanPlay(mask uint64, col int) bool {
 	return (mask)&((1<<5)<<(col*7)) == 0
 }
 
-func play(pos uint64, mask uint64, col int) (uint64, uint64) {
+func Play(pos uint64, mask uint64, col int) (uint64, uint64) {
 	pos = pos ^ mask
 	mask |= mask + 1<<(col*7)
 	return pos, mask
 }
 
-func key(pos uint64, mask uint64) uint64 {
+func Key(pos uint64, mask uint64) uint64 {
 	return pos + mask
 }
 
-func aligned(pos uint64) bool {
+func Aligned(pos uint64) bool {
 	// Horizontal
 	inter := pos & (pos >> 7)
 	if (inter & (inter >> 14)) != 0 {
