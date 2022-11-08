@@ -12,7 +12,7 @@ type Position struct {
 	moveNumber int
 }
 
-func possibleNonLosingMoves() Position {
+func PossibleNonLosingMoves() Position {
 
 }
 
