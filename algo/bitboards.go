@@ -56,5 +56,6 @@ func Aligned(pos uint64) bool {
 }
 
 func main() {
+
 	fmt.Println("vim-go")
 }

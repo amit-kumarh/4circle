@@ -2,20 +2,22 @@
 // plays the positions
 // evaluates time to sovle
 
-package main
+package fourcircle
+
+// package main
 
 import (
 	"bufio"
 	"fmt"
 	"log"
-	"math/rand"
 	"os"
 	"strconv"
 	"time"
 )
 
 func tester() [][]int {
-	files := []string{"Test_L1_R1.txt", "Test_L1_R2.txt", "Test_L1_R3.txt", "Test_L2_R1.txt", "Test_L2_R2.txt", "Test_L3_R1.txt"}
+	// files := []string{"Test_L1_R1.txt", "Test_L1_R2.txt", "Test_L1_R3.txt", "Test_L2_R1.txt", "Test_L2_R2.txt", "Test_L3_R1.txt"}
+	files := []string{"Test_L1_R1.txt"}
 	testData := make([][]int, len(files))
 
 	for i := 0; i < len(files); i++ {
@@ -29,9 +31,9 @@ func tester() [][]int {
 		scanner := bufio.NewScanner(file)
 		scanner.Split(bufio.ScanWords)
 
-		averageScore := 0
-		averageTime := 0
-		averageNodes := 0
+		// averageScore := 0
+		// averageTime := 0
+		// averageNodes := 0
 
 		for scanner.Scan() {
 			position := scanner.Text()
@@ -47,8 +49,17 @@ func tester() [][]int {
 			fmt.Println("Position: ", position)
 			// fmt.Println("Expected Score: ", expectedScore)
 
+			pos, err := strconv.ParseUint(position, 10, 64)
+			if err != nil {
+				log.Fatal(err)
+			}
+
 			// start timer
 			timerStart := time.Now()
+
+			var positionStruct Position
+			positionStruct.position = pos
+			score := Negamax(positionStruct, -22, 22)
 
 			// run solver function -- returns should be:
 			// 		- actual score
@@ -56,33 +67,16 @@ func tester() [][]int {
 			// will prob need to split up position to be integers and fed in to the solver 1 at a time
 			// end timer
 
-			// TO BE CHANGED:
-			actualScore := expectedScore
-
-			rand.Seed(time.Now().UnixNano())
-			nodesExplored := rand.Intn(10000000)
-
-			//
-
 			duration := time.Since(timerStart)
 			duration = duration / time.Microsecond
 
-			if actualScore != expectedScore {
+			if score != expectedScore {
 				panic("Actual Score does not equal expected score!")
 			}
 
-			// calc averages
-			averageTime += int(duration)
-			averageNodes += nodesExplored
-			averageScore += actualScore
-
+			fmt.Println("Score: ", score)
+			fmt.Println("Time: ", duration)
 		}
-
-		averageTime = averageTime / 1000
-		averageNodes = averageNodes / 1000
-		averageScore = averageScore / 1000
-
-		testData[i] = []int{averageTime, averageNodes, averageScore}
 		file.Close()
 	}
 
