@@ -2,22 +2,28 @@ package fourcircle
 
 import "fmt"
 
-func CanPlay(mask uint64, col int) bool {
-	return (mask)&((1<<5)<<(col*7)) == 0
+type Position struct {
+	position uint64
+	mask     uint64
+	moves    int
 }
 
-func Play(pos uint64, mask uint64, col int) (uint64, uint64) {
-	pos = pos ^ mask
-	mask |= mask + 1<<(col*7)
-	return pos, mask
+func CanPlay(pos Position, col int) bool {
+	return (pos.mask)&((1<<5)<<(col*7)) == 0
+}
+
+func Play(pos *Position, col int) {
+	pos.position ^= pos.mask
+	pos.mask |= pos.mask + 1<<(col*7)
 }
 
 func Key(pos uint64, mask uint64) uint64 {
 	return pos + mask
 }
 
-func IsWinningMove(pos uint64, mask uint64, col int) bool {
-	test_pos, _ := Play(pos, mask, col)
+func IsWinningMove(pos *Position, col int) bool {
+	test_pos := pos.position
+	test_pos |= pos.mask + 1<<(col*7)
 	return Aligned(test_pos)
 }
 
