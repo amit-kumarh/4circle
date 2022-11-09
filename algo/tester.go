@@ -2,11 +2,13 @@
 // plays the positions
 // evaluates time to sovle
 
-package fourcircle
+package main
 
 // package main
 
 import (
+	// direct path
+	// direct path
 	"bufio"
 	"fmt"
 	"log"
@@ -37,6 +39,9 @@ func tester() [][]int {
 
 		for scanner.Scan() {
 			position := scanner.Text()
+			var positionStruct Position
+			positionStruct.moves = len(position)
+			fmt.Println("Moves: ", positionStruct.moves)
 
 			scanner.Scan()
 
@@ -46,7 +51,7 @@ func tester() [][]int {
 				log.Fatal(error)
 			}
 
-			fmt.Println("Position: ", position)
+			// fmt.Println("Position: ", position)
 			// fmt.Println("Expected Score: ", expectedScore)
 
 			pos, err := strconv.ParseUint(position, 10, 64)
@@ -54,11 +59,11 @@ func tester() [][]int {
 				log.Fatal(err)
 			}
 
+			positionStruct.position = pos
+
 			// start timer
 			timerStart := time.Now()
 
-			var positionStruct Position
-			positionStruct.position = pos
 			score := Negamax(positionStruct, -22, 22)
 
 			// run solver function -- returns should be:
@@ -69,7 +74,8 @@ func tester() [][]int {
 
 			duration := time.Since(timerStart)
 			duration = duration / time.Microsecond
-
+			fmt.Println("score: ", score)
+			fmt.Println("expected score: ", expectedScore)
 			if score != expectedScore {
 				panic("Actual Score does not equal expected score!")
 			}

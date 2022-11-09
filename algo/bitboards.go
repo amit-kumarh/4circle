@@ -1,4 +1,4 @@
-package fourcircle
+package main
 
 import "fmt"
 
@@ -31,31 +31,30 @@ func Aligned(pos uint64) bool {
 	// Horizontal
 	inter := pos & (pos >> 7)
 	if (inter & (inter >> 14)) != 0 {
+		fmt.Println("Horizontal win")
 		return true
 	}
 
 	// Vertical
 	inter = pos & (pos >> 1)
 	if (inter & (inter >> 2)) != 0 {
+		fmt.Println("Vertical Win")
 		return true
 	}
 
 	// Diagonal Down
 	inter = pos & (pos >> 6)
 	if (inter & (inter >> 12)) != 0 {
+		fmt.Println("Diagonal Win 1")
 		return true
 	}
 
 	// Diagonal Up
 	inter = pos & (pos >> 8)
 	if (inter & (inter >> 16)) != 0 {
+		fmt.Println("Diagonal Win 2")
 		return true
 	}
 
 	return false
-}
-
-func main() {
-
-	fmt.Println("vim-go")
 }

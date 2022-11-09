@@ -1,4 +1,6 @@
-package fourcircle
+package main
+
+import "fmt"
 
 // solver function takes the position and alpha-beta values and evaluates the score
 
@@ -17,7 +19,7 @@ func Negamax(position Position, alpha int, beta int) int {
 	// checking if we can win next move
 	for i := 0; i < 7; i++ {
 		if CanPlay(&position, i) && IsWinningMove(&position, i) {
-			return 21 - (position.moves / 2)
+			return 21 - position.moves/2
 		}
 	}
 
@@ -35,7 +37,9 @@ func Negamax(position Position, alpha int, beta int) int {
 			to_check := position
 			Play(&to_check, i)
 
-			score := -Negamax(to_check, alpha, beta)
+			score := -Negamax(to_check, -alpha, -beta)
+
+			fmt.Println("score: ", score)
 
 			if score >= beta {
 				return beta
