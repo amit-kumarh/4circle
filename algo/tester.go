@@ -33,15 +33,10 @@ func tester() [][]int {
 		scanner := bufio.NewScanner(file)
 		scanner.Split(bufio.ScanWords)
 
-		// averageScore := 0
-		// averageTime := 0
-		// averageNodes := 0
-
 		for scanner.Scan() {
 			position := scanner.Text()
 			var positionStruct Position
 			positionStruct.moves = len(position)
-			fmt.Println("Moves: ", positionStruct.moves)
 
 			scanner.Scan()
 
@@ -50,9 +45,6 @@ func tester() [][]int {
 			if error != nil {
 				log.Fatal(error)
 			}
-
-			// fmt.Println("Position: ", position)
-			// fmt.Println("Expected Score: ", expectedScore)
 
 			pos, err := strconv.ParseUint(position, 10, 64)
 			if err != nil {
@@ -66,21 +58,14 @@ func tester() [][]int {
 
 			score := Negamax(positionStruct, -22, 22)
 
-			// run solver function -- returns should be:
-			// 		- actual score
-			// 		- number of nodes explored
-			// will prob need to split up position to be integers and fed in to the solver 1 at a time
-			// end timer
-
 			duration := time.Since(timerStart)
 			duration = duration / time.Microsecond
+
 			fmt.Println("score: ", score)
 			fmt.Println("expected score: ", expectedScore)
 			if score != expectedScore {
 				panic("Actual Score does not equal expected score!")
 			}
-
-			fmt.Println("Score: ", score)
 			fmt.Println("Time: ", duration)
 		}
 		file.Close()

@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 // solver function takes the position and alpha-beta values and evaluates the score
 
 // what is the solver going to do:
@@ -11,6 +9,8 @@ import "fmt"
 const NUM_SPACES int = 42
 
 func Negamax(position Position, alpha int, beta int) int {
+	columnOrder := []int{3, 4, 2, 5, 1, 6, 0}
+	position.moves++ // increment num of nodes explored
 	// check for draw
 	if position.moves == NUM_SPACES {
 		return 0
@@ -19,7 +19,7 @@ func Negamax(position Position, alpha int, beta int) int {
 	// checking if we can win next move
 	for i := 0; i < 7; i++ {
 		if CanPlay(&position, i) && IsWinningMove(&position, i) {
-			return 21 - position.moves/2
+			return 21 - (position.moves / 2)
 		}
 	}
 
@@ -33,13 +33,11 @@ func Negamax(position Position, alpha int, beta int) int {
 
 	// look for best possible score, save that score in var
 	for i := 0; i < 7; i++ {
-		if CanPlay(&position, i) {
+		if CanPlay(&position, columnOrder[i]) {
 			to_check := position
-			Play(&to_check, i)
+			Play(&to_check, columnOrder[i])
 
 			score := -Negamax(to_check, -alpha, -beta)
-
-			fmt.Println("score: ", score)
 
 			if score >= beta {
 				return beta

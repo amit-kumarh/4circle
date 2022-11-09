@@ -1,3 +1,3 @@
-module 4circle
+module main
 
 go 1.13
