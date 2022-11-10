@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type Position struct {
 	position uint64
 	mask     uint64
@@ -13,6 +15,7 @@ func CanPlay(pos *Position, col int) bool {
 func Play(pos *Position, col int) {
 	pos.position ^= pos.mask
 	pos.mask |= pos.mask + 1<<(col*7)
+	pos.moves++
 }
 
 func Key(pos uint64, mask uint64) uint64 {
@@ -29,13 +32,14 @@ func Aligned(pos uint64) bool {
 	// Horizontal
 	inter := pos & (pos >> 7)
 	if (inter & (inter >> 14)) != 0 {
-		// fmt.Println("Horizontal win")
+		fmt.Println("Horizontal win")
 		return true
 	}
 
 	// Vertical
 	inter = pos & (pos >> 1)
 	if (inter & (inter >> 2)) != 0 {
+		fmt.Println("Vertical win")
 		return true
 	}
 

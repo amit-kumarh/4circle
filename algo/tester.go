@@ -37,7 +37,7 @@ func tester() [][]int {
 			position := scanner.Text()
 			var positionStruct Position
 			positionStruct.moves = len(position)
-
+			fmt.Println("Number of Moves: ", positionStruct.moves)
 			scanner.Scan()
 
 			expectedScore, error := strconv.Atoi(scanner.Text())
@@ -56,7 +56,7 @@ func tester() [][]int {
 			// start timer
 			timerStart := time.Now()
 
-			score := Negamax(positionStruct, -22, 22)
+			score := Negamax(positionStruct, -21, 21)
 
 			duration := time.Since(timerStart)
 			duration = duration / time.Microsecond
