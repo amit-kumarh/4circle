@@ -14,12 +14,13 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 )
 
 func tester() [][]int {
 	// files := []string{"Test_L1_R1.txt", "Test_L1_R2.txt", "Test_L1_R3.txt", "Test_L2_R1.txt", "Test_L2_R2.txt", "Test_L3_R1.txt"}
-	files := []string{"Test_L1_R1.txt"}
+	files := []string{"testPosition.txt"}
 	testData := make([][]int, len(files))
 
 	for i := 0; i < len(files); i++ {
@@ -36,8 +37,7 @@ func tester() [][]int {
 		for scanner.Scan() {
 			position := scanner.Text()
 			var positionStruct Position
-			positionStruct.moves = len(position)
-			fmt.Println("Number of Moves: ", positionStruct.moves)
+
 			scanner.Scan()
 
 			expectedScore, error := strconv.Atoi(scanner.Text())
@@ -46,13 +46,15 @@ func tester() [][]int {
 				log.Fatal(error)
 			}
 
-			pos, err := strconv.ParseUint(position, 10, 64)
-			if err != nil {
-				log.Fatal(err)
+			posArray := strings.Split(position, "")
+			for i := 0; i < len(posArray); i++ {
+				posInt, _ := strconv.Atoi(posArray[i])
+				Play(&positionStruct, posInt)
 			}
 
-			positionStruct.position = pos
-
+			fmt.Println("Position Bitstring: ", positionStruct.position)
+			fmt.Println("Mask Bitstring: ", positionStruct.mask)
+			fmt.Println("Num of Moves: ", positionStruct.moves)
 			// start timer
 			timerStart := time.Now()
 

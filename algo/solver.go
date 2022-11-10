@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 // solver function takes the position and alpha-beta values and evaluates the score
 
 // what is the solver going to do:
@@ -12,7 +10,7 @@ const NUM_SPACES int = 42
 
 func Negamax(position Position, alpha int, beta int) int {
 
-	fmt.Println("Running Negamax")
+	// fmt.Println("Running Negamax")
 	columnOrder := []int{3, 4, 2, 5, 1, 6, 0}
 	position.moves++ // increment num of nodes explored
 	// check for draw
