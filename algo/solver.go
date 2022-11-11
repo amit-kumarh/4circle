@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 // solver function takes the position and alpha-beta values and evaluates the score
 
 // what is the solver going to do:
@@ -19,13 +21,16 @@ func Negamax(position Position, alpha int, beta int) int {
 	}
 
 	// checking if we can win next move
-	for i := 0; i < 7; i++ {
+	for i := 0; i <= 6; i++ {
 		if CanPlay(&position, i) && IsWinningMove(&position, i) {
-			return 21 - (position.moves / 2)
+			// fmt.Println("Can win next move")
+			// fmt.Println("Moves: ", position.moves)
+			fmt.Println("Col: ", i)
+			return 22 - ((position.moves + 1) / 2)
 		}
 	}
 
-	max := 20 - (position.moves / 2)
+	max := 21 - ((position.moves + 1) / 2)
 	if beta > max {
 		beta = max
 		if alpha >= beta {
@@ -40,6 +45,7 @@ func Negamax(position Position, alpha int, beta int) int {
 			Play(&to_check, columnOrder[i])
 
 			score := -Negamax(to_check, -alpha, -beta)
+			// fmt.Println("Score: ", score)
 
 			if score >= beta {
 				return beta

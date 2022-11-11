@@ -49,12 +49,13 @@ func tester() [][]int {
 			posArray := strings.Split(position, "")
 			for i := 0; i < len(posArray); i++ {
 				posInt, _ := strconv.Atoi(posArray[i])
+				posInt -= 1
 				Play(&positionStruct, posInt)
 			}
 
-			fmt.Println("Position Bitstring: ", positionStruct.position)
-			fmt.Println("Mask Bitstring: ", positionStruct.mask)
-			fmt.Println("Num of Moves: ", positionStruct.moves)
+			// fmt.Println("Position Bitstring: ", positionStruct.position)
+			// fmt.Println("Mask Bitstring: ", positionStruct.mask)
+			// fmt.Println("Num of Moves: ", positionStruct.moves)
 			// start timer
 			timerStart := time.Now()
 
