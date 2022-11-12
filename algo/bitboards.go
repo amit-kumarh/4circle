@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 type Position struct {
 	position uint64
@@ -24,23 +27,42 @@ func Key(pos uint64, mask uint64) uint64 {
 
 func IsWinningMove(pos *Position, col int) bool {
 	test_pos := pos.position
-	test_pos |= (pos.mask + (1 << col * 7)) & (63 << col * 7)
-	fmt.Println("Test pos: ", test_pos)
+
+	test_pos |= (pos.mask + bottomMask(col)) & columnMask(col)
+	fmt.Println("Test pos: ", strconv.FormatInt(int64(test_pos), 2))
 	return Aligned(test_pos)
 }
 
+// return a bitmask containg a single 1 corresponding to the top cell of a given column
+func topMask(col int) uint64 {
+	// fmt.Println("Top Mask: ", strconv.FormatInt(((1<<5)<<col*7), 2))
+	return (1 << 5) << col * 7
+}
+
+// return a bitmask containg a single 1 corresponding to the bottom cell of a given column
+func bottomMask(col int) uint64 {
+	// fmt.Println("Bottom Mask: ", strconv.FormatInt((1<<col*7), 2))
+	return 1 << col * 7
+}
+
+// return a bitmask 1 on all the cells of a given column
+func columnMask(col int) uint64 {
+	// fmt.Println("Column Mask: ", strconv.FormatInt(((1<<5)<<col*7), 2))
+	return (1 << 5) << col * 7
+}
 func Aligned(pos uint64) bool {
 	// Horizontal
 	inter := pos & (pos >> 7)
 	if (inter & (inter >> 14)) != 0 {
-		fmt.Println("Horizontal win")
+		fmt.Println("Horizontal win: ", strconv.FormatInt(int64(inter&(inter>>14)), 2))
+
 		return true
 	}
 
 	// Vertical
 	inter = pos & (pos >> 1)
 	if (inter & (inter >> 2)) != 0 {
-		fmt.Println("Vertical win")
+		fmt.Println("Vertical win: ", strconv.FormatInt(int64(inter&(inter>>2)), 2))
 		return true
 	}
 

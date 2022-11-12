@@ -20,7 +20,7 @@ import (
 
 func tester() [][]int {
 	// files := []string{"Test_L1_R1.txt", "Test_L1_R2.txt", "Test_L1_R3.txt", "Test_L2_R1.txt", "Test_L2_R2.txt", "Test_L3_R1.txt"}
-	files := []string{"testPosition.txt"}
+	files := []string{"Test_L1_R1.txt"}
 	testData := make([][]int, len(files))
 
 	for i := 0; i < len(files); i++ {
@@ -39,7 +39,7 @@ func tester() [][]int {
 			var positionStruct Position
 
 			scanner.Scan()
-
+			fmt.Println("Position: ", position)
 			expectedScore, error := strconv.Atoi(scanner.Text())
 
 			if error != nil {
@@ -53,13 +53,13 @@ func tester() [][]int {
 				Play(&positionStruct, posInt)
 			}
 
-			// fmt.Println("Position Bitstring: ", positionStruct.position)
-			// fmt.Println("Mask Bitstring: ", positionStruct.mask)
+			fmt.Println("Position Bitstring: ", strconv.FormatInt(int64(positionStruct.position), 2))
+			fmt.Println("Mask Bitstring: ", strconv.FormatInt(int64(positionStruct.mask), 2))
 			// fmt.Println("Num of Moves: ", positionStruct.moves)
 			// start timer
 			timerStart := time.Now()
 
-			score := Negamax(positionStruct, -21, 21)
+			score := Negamax(positionStruct, -22, 22)
 
 			duration := time.Since(timerStart)
 			duration = duration / time.Microsecond
