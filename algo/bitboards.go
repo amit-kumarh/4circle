@@ -12,11 +12,13 @@ type Position struct {
 }
 
 func CanPlay(pos *Position, col int) bool {
-	return (pos.mask)&((1<<5)<<(col*7)) == 0
+	return (pos.mask & topMask(col)) == 0
 }
 
 func Play(pos *Position, col int) {
+	fmt.Println("Move: Chip in column ", col+1)
 	pos.position ^= pos.mask
+	fmt.Println("Position Bitstring: ", strconv.FormatInt(int64(pos.position), 2))
 	pos.mask |= pos.mask + (1 << (col * 7))
 	pos.moves++
 }
@@ -29,7 +31,7 @@ func IsWinningMove(pos *Position, col int) bool {
 	test_pos := pos.position
 
 	test_pos |= (pos.mask + bottomMask(col)) & columnMask(col)
-	fmt.Println("Test pos: ", strconv.FormatInt(int64(test_pos), 2))
+	// fmt.Println("Test pos: ", strconv.FormatInt(int64(test_pos), 2))
 	return Aligned(test_pos)
 }
 
