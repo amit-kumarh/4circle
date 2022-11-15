@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type Position struct {
 	position uint64
 	mask     uint64
@@ -10,9 +12,20 @@ func CanPlay(pos *Position, col int) bool {
 	return (pos.mask & topMask(col)) == 0
 }
 
+func InitializeBoard(pos *Position, seq string) {
+	for i := 0; i < len(seq); i++ {
+		colByte := seq[i] - '0'
+		fmt.Println(colByte)
+		col := int(colByte)
+		if col < 0 || col >= 7 || !CanPlay(pos, col) || IsWinningMove(pos, col) {
+			return
+		}
+		Play(pos, col)
+	}
+}
 func Play(pos *Position, col int) {
 	pos.position ^= pos.mask
-	pos.mask |= pos.mask + (1 << (col * 7))
+	pos.mask |= pos.mask + bottomMask(col)
 	pos.moves++
 }
 

@@ -14,7 +14,6 @@ import (
 	"log"
 	"os"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -46,19 +45,14 @@ func tester() [][]int {
 				log.Fatal(error)
 			}
 
-			posArray := strings.Split(position, "")
-			for i := 0; i < len(posArray); i++ {
-				posInt, _ := strconv.Atoi(posArray[i])
-				posInt -= 1
-				Play(&positionStruct, posInt)
-			}
+			InitializeBoard(&positionStruct, position)
 
 			fmt.Println("Position Bitstring: ", positionStruct.position)
 			fmt.Println("Mask Bitstring: ", positionStruct.mask)
 			// start timer
 			timerStart := time.Now()
-
-			score := Negamax(positionStruct, -22, 22)
+			score := 0
+			// score := Negamax(positionStruct, -22, 22)
 
 			duration := time.Since(timerStart)
 			duration = duration / time.Microsecond
@@ -68,7 +62,7 @@ func tester() [][]int {
 			if score != expectedScore {
 				panic("Actual Score does not equal expected score!")
 			}
-			// fmt.Println("Time: ", duration)
+			fmt.Println("Time: ", duration)
 		}
 		file.Close()
 	}

@@ -11,7 +11,7 @@ import "fmt"
 const NUM_SPACES int = 42
 
 func Negamax(position Position, alpha int, beta int) int {
-	fmt.Println("Running negamax")
+	// fmt.Println("Running negamax")
 	// fmt.Println("Running Negamax")
 	columnOrder := []int{3, 4, 2, 5, 1, 6, 0}
 	position.moves++ // increment num of nodes explored
@@ -24,18 +24,17 @@ func Negamax(position Position, alpha int, beta int) int {
 	for i := 0; i <= 6; i++ {
 		if CanPlay(&position, i) && IsWinningMove(&position, i) {
 			// fmt.Println("Can win next move")
-			// fmt.Println("Moves: ", position.moves)
-			// fmt.Println("Col: ", i)
-			return 22 - ((position.moves + 1) / 2)
+			fmt.Println("Score: ", (43-position.moves)/2)
+			return (43 - position.moves) / 2
 		}
 	}
 
-	max := 21 - ((position.moves + 1) / 2)
-	fmt.Println("Max score: ", max)
+	max := (41 - position.moves) / 2
+	// fmt.Println("Max score: ", max)
 	if beta > max {
 		beta = max
 		if alpha >= beta {
-			fmt.Println("Beta: ", beta)
+			// fmt.Println("Beta: ", beta)
 			return beta
 		}
 	}
@@ -52,14 +51,14 @@ func Negamax(position Position, alpha int, beta int) int {
 			// fmt.Println("Score: ", score)
 
 			if score >= beta {
-
-				return beta
+				fmt.Println("Score: ", score)
+				return score
 			}
 			if score > alpha {
 				alpha = score
 			}
 		}
 	}
-
+	fmt.Println("Score: ", alpha)
 	return alpha
 }
