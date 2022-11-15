@@ -6,13 +6,18 @@ type Position struct {
 	moves    int
 }
 
+func createPosition() *Position {
+
+	pos := &Position{0, 0, 0}
+	return pos
+}
 func CanPlay(pos *Position, col int) bool {
 	return (pos.mask & topMask(col)) == 0
 }
 
 func InitializeBoard(pos *Position, seq string) {
 	for i := 0; i < len(seq); i++ {
-		colByte := seq[i] - '0'
+		colByte := seq[i] - '1'
 		// fmt.Println(colByte)
 		col := int(colByte)
 		if col < 0 || col > 7 || !CanPlay(pos, col) || IsWinningMove(pos, col) {
@@ -56,6 +61,8 @@ func columnMask(col int) uint64 {
 	// fmt.Println("Column Mask: ", strconv.FormatInt(((1<<5)<<col*7), 2))
 	return ((1 << 6) - 1) << (col * 7)
 }
+
+// func PrintBitBoard(pos *Position)
 func Aligned(pos uint64) bool {
 	// Horizontal
 	inter := pos & (pos >> 7)

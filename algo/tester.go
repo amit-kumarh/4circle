@@ -1,10 +1,10 @@
-// ideally takes a data set
-// plays the positions
-// evaluates time to sovle
+// // ideally takes a data set
+// // plays the positions
+// // evaluates time to sovle
 
 package main
 
-// package main
+// // package main
 
 import (
 	// direct path
@@ -35,7 +35,8 @@ func tester() [][]int {
 
 		for scanner.Scan() {
 			position := scanner.Text()
-			var positionStruct Position
+			pos := createPosition()
+			sol := newSolver()
 
 			scanner.Scan()
 			fmt.Println("Position: ", position)
@@ -45,16 +46,16 @@ func tester() [][]int {
 				log.Fatal(error)
 			}
 
-			InitializeBoard(&positionStruct, position)
+			InitializeBoard(pos, position)
 
-			fmt.Println("Position Bitstring: ", positionStruct.position)
-			fmt.Println("Mask Bitstring: ", positionStruct.mask)
+			fmt.Println("Position Bitstring: ", pos.position)
+			fmt.Println("Mask Bitstring: ", pos.mask)
 			// start timer
 			timerStart := time.Now()
 			// var sol Solver
 			// sol.nodesExplored = 0
 			// score := 0
-			score := Negamax(positionStruct, -22, 22)
+			score := Negamax(pos, sol, -22, 22)
 
 			duration := time.Since(timerStart)
 			duration = duration / time.Microsecond
