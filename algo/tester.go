@@ -53,9 +53,8 @@ func tester() [][]int {
 				Play(&positionStruct, posInt)
 			}
 
-			fmt.Println("Position Bitstring: ", strconv.FormatInt(int64(positionStruct.position), 2))
-			fmt.Println("Mask Bitstring: ", strconv.FormatInt(int64(positionStruct.mask), 2))
-			// fmt.Println("Num of Moves: ", positionStruct.moves)
+			fmt.Println("Position Bitstring: ", positionStruct.position)
+			fmt.Println("Mask Bitstring: ", positionStruct.mask)
 			// start timer
 			timerStart := time.Now()
 
@@ -69,20 +68,9 @@ func tester() [][]int {
 			if score != expectedScore {
 				panic("Actual Score does not equal expected score!")
 			}
-			fmt.Println("Time: ", duration)
+			// fmt.Println("Time: ", duration)
 		}
 		file.Close()
 	}
-
-	// fmt.Println("--------Averages------")
-
-	// for i := 0; i < len(testData); i++ {
-	// 	data := testData[i]
-	// 	fmt.Println("Test ", i)
-	// 	fmt.Println("Average Time: ", data[0])
-	// 	fmt.Println("Average Nodes Explored: ", data[1])
-	// 	fmt.Println("Average Score: ", data[2])
-	// 	fmt.Println("Time per Node Explored: ", int(data[0]/data[1]))
-	// }
 	return testData
 }
