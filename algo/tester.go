@@ -51,12 +51,14 @@ func tester() [][]int {
 			fmt.Println("Mask Bitstring: ", positionStruct.mask)
 			// start timer
 			timerStart := time.Now()
-			score := 0
-			// score := Negamax(positionStruct, -22, 22)
+			// score := 0
+			score := Negamax(positionStruct, -22, 22)
 
 			duration := time.Since(timerStart)
 			duration = duration / time.Microsecond
 
+			fmt.Println("")
+			fmt.Println("----Final Results----")
 			fmt.Println("score: ", score)
 			fmt.Println("expected score: ", expectedScore)
 			if score != expectedScore {

@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 type Position struct {
 	position uint64
 	mask     uint64
@@ -15,9 +13,9 @@ func CanPlay(pos *Position, col int) bool {
 func InitializeBoard(pos *Position, seq string) {
 	for i := 0; i < len(seq); i++ {
 		colByte := seq[i] - '0'
-		fmt.Println(colByte)
+		// fmt.Println(colByte)
 		col := int(colByte)
-		if col < 0 || col >= 7 || !CanPlay(pos, col) || IsWinningMove(pos, col) {
+		if col < 0 || col > 7 || !CanPlay(pos, col) || IsWinningMove(pos, col) {
 			return
 		}
 		Play(pos, col)
@@ -62,8 +60,8 @@ func Aligned(pos uint64) bool {
 	// Horizontal
 	inter := pos & (pos >> 7)
 	if (inter & (inter >> 14)) != 0 {
-		// fmt.Println("Horizontal win: ", strconv.FormatInt(int64(inter&(inter>>14)), 2))
 
+		// fmt.Println("Horizontal Win")
 		return true
 	}
 

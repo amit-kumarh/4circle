@@ -11,8 +11,13 @@ import "fmt"
 const NUM_SPACES int = 42
 
 func Negamax(position Position, alpha int, beta int) int {
-	// fmt.Println("Running negamax")
-	// fmt.Println("Running Negamax")
+	fmt.Println("")
+	fmt.Println("Alpha: ", alpha)
+	fmt.Println("Beta: ", beta)
+
+	if alpha >= beta {
+		panic("Alpha must be less than Beta!")
+	}
 	columnOrder := []int{3, 4, 2, 5, 1, 6, 0}
 	position.moves++ // increment num of nodes explored
 	// check for draw
@@ -34,7 +39,7 @@ func Negamax(position Position, alpha int, beta int) int {
 	if beta > max {
 		beta = max
 		if alpha >= beta {
-			// fmt.Println("Beta: ", beta)
+			fmt.Println("Score: ", beta)
 			return beta
 		}
 	}
@@ -49,6 +54,7 @@ func Negamax(position Position, alpha int, beta int) int {
 
 			score := -Negamax(to_check, -beta, -alpha)
 			// fmt.Println("Score: ", score)
+			// fmt.Println("Nodes explored: ", position.moves)
 
 			if score >= beta {
 				fmt.Println("Score: ", score)
