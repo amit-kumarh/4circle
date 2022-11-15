@@ -51,6 +51,8 @@ func tester() [][]int {
 			fmt.Println("Mask Bitstring: ", positionStruct.mask)
 			// start timer
 			timerStart := time.Now()
+			// var sol Solver
+			// sol.nodesExplored = 0
 			// score := 0
 			score := Negamax(positionStruct, -22, 22)
 
