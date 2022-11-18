@@ -18,8 +18,10 @@ import (
 )
 
 func tester() [][]int {
+	masterTimer := time.Now()
+	var max time.Duration
 	// files := []string{"Test_L1_R1.txt", "Test_L1_R2.txt", "Test_L1_R3.txt", "Test_L2_R1.txt", "Test_L2_R2.txt", "Test_L3_R1.txt"}
-	files := []string{"Test_L1_R1.txt"}
+	files := []string{"Test_L2_R1.txt"}
 	testData := make([][]int, len(files))
 
 	for i := 0; i < len(files); i++ {
@@ -52,13 +54,12 @@ func tester() [][]int {
 			fmt.Println("Mask Bitstring: ", pos.mask)
 			// start timer
 			timerStart := time.Now()
-			// var sol Solver
-			// sol.nodesExplored = 0
-			// score := 0
 			score := Negamax(pos, sol, -22, 22)
 
 			duration := time.Since(timerStart)
-			duration = duration / time.Microsecond
+			if duration > max {
+				max = duration
+			}
 
 			fmt.Println("")
 			fmt.Println("----Final Results----")
@@ -71,5 +72,8 @@ func tester() [][]int {
 		}
 		file.Close()
 	}
+	elapsed := time.Since(masterTimer)
+	fmt.Println(elapsed)
+	fmt.Println(max)
 	return testData
 }

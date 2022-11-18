@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 // solver function takes the position and alpha-beta values and evaluates the score
 
 // what is the solver going to do:
@@ -19,10 +17,6 @@ func newSolver() *Solver {
 }
 
 func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
-	fmt.Println("")
-	fmt.Println("Alpha: ", alpha)
-	fmt.Println("Beta: ", beta)
-
 	if alpha >= beta {
 		panic("Alpha must be less than Beta!")
 	}
@@ -37,7 +31,6 @@ func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
 	for i := 0; i <= 6; i++ {
 		if CanPlay(position, i) && IsWinningMove(position, i) {
 			// fmt.Println("Can win next move")
-			fmt.Println("Score: ", (43-position.moves)/2)
 			return (43 - position.moves) / 2
 		}
 	}
@@ -47,7 +40,6 @@ func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
 	if beta > max {
 		beta = max
 		if alpha >= beta {
-			fmt.Println("Score: ", beta)
 			return beta
 		}
 	}
@@ -57,15 +49,14 @@ func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
 		// fmt.Println("In for loop")
 		if CanPlay(position, columnOrder[i]) {
 
-			to_check := position
-			Play(to_check, columnOrder[i])
+			to_check := *position
+			Play(&to_check, columnOrder[i])
 
-			score := -Negamax(to_check, sol, -beta, -alpha)
+			score := -Negamax(&to_check, sol, -beta, -alpha)
 			// fmt.Println("Score: ", score)
 			// fmt.Println("Nodes explored: ", position.moves)
 
 			if score >= beta {
-				fmt.Println("Score: ", score)
 				return score
 			}
 			if score > alpha {
@@ -73,6 +64,5 @@ func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
 			}
 		}
 	}
-	fmt.Println("Score: ", alpha)
 	return alpha
 }
