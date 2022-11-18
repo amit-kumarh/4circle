@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 // solver function takes the position and alpha-beta values and evaluates the score
 
 // what is the solver going to do:
@@ -10,20 +8,35 @@ import "fmt"
 
 const NUM_SPACES int = 42
 
-func Negamax(position Position, alpha int, beta int) int {
+type Solver struct {
+	nodesExplored int
+}
+
+func newSolver() *Solver {
+	return &Solver{0}
+}
+
+func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
+	if alpha >= beta {
+		panic("Alpha must be less than Beta!")
+	}
+	columnOrder := []int{3, 4, 2, 5, 1, 6, 0}
+	sol.nodesExplored++
 	// check for draw
 	if position.moves == NUM_SPACES {
 		return 0
 	}
 
 	// checking if we can win next move
-	for i := 0; i < 7; i++ {
-		if CanPlay(&position, i) && IsWinningMove(&position, i) {
-			return 21 - position.moves/2
+	for i := 0; i <= 6; i++ {
+		if CanPlay(position, i) && IsWinningMove(position, i) {
+			// fmt.Println("Can win next move")
+			return (43 - position.moves) / 2
 		}
 	}
 
-	max := 20 - (position.moves / 2)
+	max := (41 - position.moves) / 2
+	// fmt.Println("Max score: ", max)
 	if beta > max {
 		beta = max
 		if alpha >= beta {
@@ -33,22 +46,23 @@ func Negamax(position Position, alpha int, beta int) int {
 
 	// look for best possible score, save that score in var
 	for i := 0; i < 7; i++ {
-		if CanPlay(&position, i) {
-			to_check := position
-			Play(&to_check, i)
+		// fmt.Println("In for loop")
+		if CanPlay(position, columnOrder[i]) {
 
-			score := -Negamax(to_check, -alpha, -beta)
+			to_check := *position
+			Play(&to_check, columnOrder[i])
 
-			fmt.Println("score: ", score)
+			score := -Negamax(&to_check, sol, -beta, -alpha)
+			// fmt.Println("Score: ", score)
+			// fmt.Println("Nodes explored: ", position.moves)
 
 			if score >= beta {
-				return beta
+				return score
 			}
 			if score > alpha {
 				alpha = score
 			}
 		}
 	}
-
 	return alpha
 }
