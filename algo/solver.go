@@ -62,6 +62,27 @@ func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
 }
 
 func Solve(position *Position, sol *Solver) int {
-	// check if you can win in one move
-	return 0
+	min := -(42 - position.moves) / 2
+	max := (43 - position.moves) / 2
+
+	// iteratively narrow the min-max exploration window
+	for min < max {
+		med := min + (max-min)/2
+
+		if (med <= 0) && (min/2 < med) {
+			med = min / 2
+		} else if (med >= 0) && (max/2 > med) {
+			max = med / 2
+		}
+
+		// use a null depth window to figure out if the actual score is greater or smaller than med
+		r := Negamax(position, sol, med, med+1)
+
+		if r <= med {
+			max = r
+		} else {
+			min = r
+		}
+	}
+	return min
 }
