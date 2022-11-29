@@ -17,13 +17,11 @@ import (
 	"time"
 )
 
-func tester() [][]int {
-	masterTimer := time.Now()
-	var max time.Duration
+func tester() {
 	// files := []string{"Test_L1_R1.txt", "Test_L1_R2.txt", "Test_L1_R3.txt", "Test_L2_R1.txt", "Test_L2_R2.txt", "Test_L3_R1.txt"}
-	files := []string{"Test_L2_R1.txt"}
-	testData := make([][]int, len(files))
-
+	files := []string{"Test_L2_R1.txt", "Test_L2_R2.txt", "Test_L3_R1.txt"}
+	var averageTime time.Duration
+	averageNodesExplored := 0
 	for i := 0; i < len(files); i++ {
 		file, err := os.Open(files[i])
 
@@ -41,7 +39,7 @@ func tester() [][]int {
 			sol := newSolver()
 
 			scanner.Scan()
-			fmt.Println("Position: ", position)
+			// fmt.Println("Position: ", position)
 			expectedScore, error := strconv.Atoi(scanner.Text())
 
 			if error != nil {
@@ -50,30 +48,29 @@ func tester() [][]int {
 
 			InitializeBoard(pos, position)
 
-			fmt.Println("Position Bitstring: ", pos.position)
-			fmt.Println("Mask Bitstring: ", pos.mask)
+			// fmt.Println("Position Bitstring: ", pos.position)
+			// fmt.Println("Mask Bitstring: ", pos.mask)
 			// start timer
 			timerStart := time.Now()
 			score := Negamax(pos, sol, -22, 22)
 
 			duration := time.Since(timerStart)
-			if duration > max {
-				max = duration
-			}
 
-			fmt.Println("")
-			fmt.Println("----Final Results----")
-			fmt.Println("score: ", score)
-			fmt.Println("expected score: ", expectedScore)
+			averageNodesExplored += sol.nodesExplored
+			averageTime += duration
+
 			if score != expectedScore {
 				panic("Actual Score does not equal expected score!")
 			}
-			fmt.Println("Time: ", duration)
 		}
+
+		averageTime /= 1000
+		averageNodesExplored /= 1000
+
+		fmt.Println("")
+		fmt.Println("----Final Results----")
+		fmt.Println("Average Computation Time: ", averageTime)
+		fmt.Println("Average Amount of Nodes Explored: ", averageNodesExplored)
 		file.Close()
 	}
-	elapsed := time.Since(masterTimer)
-	fmt.Println(elapsed)
-	fmt.Println(max)
-	return testData
 }
