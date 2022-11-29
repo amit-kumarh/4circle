@@ -1,11 +1,5 @@
 package main
 
-// solver function takes the position and alpha-beta values and evaluates the score
-
-// what is the solver going to do:
-// takes a position and returns the score of that position
-// then algo will pick position with greatest score.
-
 const NUM_SPACES int = 42
 
 type Solver struct {
@@ -65,4 +59,9 @@ func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
 		}
 	}
 	return alpha
+}
+
+func Solve(position *Position, sol *Solver) int {
+	// check if you can win in one move
+	return 0
 }

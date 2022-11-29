@@ -6,11 +6,11 @@ type Position struct {
 	moves    int
 }
 
-func createPosition() *Position {
-
+func newPosition() *Position {
 	pos := &Position{0, 0, 0}
 	return pos
 }
+
 func CanPlay(pos *Position, col int) bool {
 	return (pos.mask & topMask(col)) == 0
 }
@@ -26,6 +26,7 @@ func InitializeBoard(pos *Position, seq string) {
 		Play(pos, col)
 	}
 }
+
 func Play(pos *Position, col int) {
 	pos.position ^= pos.mask
 	pos.mask |= pos.mask + bottomMask(col)
@@ -44,38 +45,32 @@ func IsWinningMove(pos *Position, col int) bool {
 	return Aligned(test_pos)
 }
 
-// return a bitmask containg a single 1 corresponding to the top cell of a given column
+// return a bitmask containing a single 1 corresponding to the top cell of a given column
 func topMask(col int) uint64 {
-	// fmt.Println("Top Mask: ", strconv.FormatInt(((1<<5)<<col*7), 2))
 	return (1 << 5) << (col * 7)
 }
 
-// return a bitmask containg a single 1 corresponding to the bottom cell of a given column
+// return a bitmask containing a single 1 corresponding to the bottom cell of a given column
 func bottomMask(col int) uint64 {
-	// fmt.Println("Bottom Mask: ", strconv.FormatInt((1<<col*7), 2))
 	return 1 << (col * 7)
 }
 
 // return a bitmask 1 on all the cells of a given column
 func columnMask(col int) uint64 {
-	// fmt.Println("Column Mask: ", strconv.FormatInt(((1<<5)<<col*7), 2))
 	return ((1 << 6) - 1) << (col * 7)
 }
 
-// func PrintBitBoard(pos *Position)
 func Aligned(pos uint64) bool {
+
 	// Horizontal
 	inter := pos & (pos >> 7)
 	if (inter & (inter >> 14)) != 0 {
-
-		// fmt.Println("Horizontal Win")
 		return true
 	}
 
 	// Vertical
 	inter = pos & (pos >> 1)
 	if (inter & (inter >> 2)) != 0 {
-		// fmt.Println("Vertical win: ", strconv.FormatInt(int64(inter&(inter>>2)), 2))
 		return true
 	}
 
