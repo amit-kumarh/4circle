@@ -32,8 +32,8 @@ func Play(pos *Position, col int) {
 	pos.moves++
 }
 
-func Key(pos uint64, mask uint64) uint64 {
-	return pos + mask
+func Key(pos *Position) uint64 {
+	return pos.position + pos.mask
 }
 
 func IsWinningMove(pos *Position, col int) bool {

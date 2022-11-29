@@ -1,5 +1,7 @@
 package main
 
+import lru "github.com/hashicorp/golang-lru/v2"
+
 // solver function takes the position and alpha-beta values and evaluates the score
 
 // what is the solver going to do:
@@ -10,10 +12,12 @@ const NUM_SPACES int = 42
 
 type Solver struct {
 	nodesExplored int
+	transpo       *lru.Cache[uint64, int]
 }
 
 func newSolver() *Solver {
-	return &Solver{0}
+	transpo, _ := lru.New[uint64, int](15000000)
+	return &Solver{0, transpo}
 }
 
 func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
@@ -36,7 +40,11 @@ func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
 	}
 
 	max := (41 - position.moves) / 2
-	// fmt.Println("Max score: ", max)
+	val, present := sol.transpo.Get(Key(position))
+	if present {
+		max = val
+	}
+
 	if beta > max {
 		beta = max
 		if alpha >= beta {
@@ -64,5 +72,6 @@ func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
 			}
 		}
 	}
+	sol.transpo.Add(Key(position), alpha)
 	return alpha
 }
