@@ -54,7 +54,7 @@ func tester() [][]int {
 			fmt.Println("Mask Bitstring: ", pos.mask)
 			// start timer
 			timerStart := time.Now()
-			score := Negamax(pos, sol, -1, 1)
+			score := Solve(pos, sol)
 
 			duration := time.Since(timerStart)
 			if duration > max {
