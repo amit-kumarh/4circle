@@ -77,18 +77,18 @@ func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
 }
 
 func Solve(pos *Position, sol *Solver) int {
-	min := -(42 - pos.moves)/2
-	max := (42 - pos.moves)/2
+	min := -(42 - pos.moves) / 2
+	max := (42 - pos.moves) / 2
 
 	for min < max {
-		med := min + (max - min)/2
+		med := min + (max-min)/2
 		if (med <= 0) && ((min / 2) < med) {
-			med = mid / 2
+			med = min / 2
 		} else if (med >= 0) && ((max / 2) > 2) {
 			med = max / 2
-		} 
+		}
 
-		r = Negamax(pos, sol, med, med + 1) // use a null depth window to know if score is greater than or less than med
+		r := Negamax(pos, sol, med, med+1) // use a null depth window to know if score is greater than or less than med
 		if r <= med {
 			max = r
 		} else {
