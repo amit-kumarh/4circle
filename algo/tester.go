@@ -21,7 +21,7 @@ func tester() [][]int {
 	masterTimer := time.Now()
 	var max time.Duration
 	// files := []string{"Test_L1_R1.txt", "Test_L1_R2.txt", "Test_L1_R3.txt", "Test_L2_R1.txt", "Test_L2_R2.txt", "Test_L3_R1.txt"}
-	files := []string{"Test_L2_R2.txt"}
+	files := []string{"Test_L1_R1.txt"}
 	testData := make([][]int, len(files))
 
 	for i := 0; i < len(files); i++ {
@@ -41,8 +41,8 @@ func tester() [][]int {
 			sol := newSolver()
 
 			scanner.Scan()
-			fmt.Println("Position: ", position)
-			expectedScore, error := strconv.Atoi(scanner.Text())
+			// fmt.Println("Position: ", position)
+			_, error := strconv.Atoi(scanner.Text())
 
 			if error != nil {
 				log.Fatal(error)
@@ -50,8 +50,8 @@ func tester() [][]int {
 
 			InitializeBoard(pos, position)
 
-			fmt.Println("Position Bitstring: ", pos.position)
-			fmt.Println("Mask Bitstring: ", pos.mask)
+			// fmt.Println("Position Bitstring: ", pos.position)
+			// fmt.Println("Mask Bitstring: ", pos.mask)
 			// start timer
 			timerStart := time.Now()
 			score := Negamax(pos, sol, -1, 1)
@@ -61,10 +61,10 @@ func tester() [][]int {
 				max = duration
 			}
 
-			fmt.Println("")
-			fmt.Println("----Final Results----")
+			// fmt.Println("")
+			// fmt.Println("----Final Results----")
 			fmt.Println("score: ", score)
-			fmt.Println("expected score: ", expectedScore)
+			// fmt.Println("expected score: ", expectedScore)
 			// if score != expectedScore {
 			// 	panic("Actual Score does not equal expected score!")
 			// }

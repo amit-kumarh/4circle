@@ -16,7 +16,7 @@ type Solver struct {
 }
 
 func newSolver() *Solver {
-	transpo, _ := lru.New[uint64, int](15000000)
+	transpo, _ := lru.New[uint64, int](10000000) // store 10 million entries
 	return &Solver{0, transpo}
 }
 
