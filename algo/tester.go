@@ -7,8 +7,6 @@ package main
 // // package main
 
 import (
-	// direct path
-	// direct path
 	"bufio"
 	"fmt"
 	"log"
@@ -21,8 +19,9 @@ func tester() [][]int {
 	masterTimer := time.Now()
 	var max time.Duration
 	// files := []string{"Test_L1_R1.txt", "Test_L1_R2.txt", "Test_L1_R3.txt", "Test_L2_R1.txt", "Test_L2_R2.txt", "Test_L3_R1.txt"}
-	files := []string{"Test_L1_R1.txt"}
-	testData := make([][]int, len(files))
+	files := []string{"Test_L2_R2.txt", "Test_L3_R1.txt"}
+	var averageTime time.Duration
+	averageNodesExplored := 0
 
 	for i := 0; i < len(files); i++ {
 		file, err := os.Open(files[i])
@@ -31,7 +30,6 @@ func tester() [][]int {
 			log.Fatal(err)
 		}
 
-		// defer file.Close()
 		scanner := bufio.NewScanner(file)
 		scanner.Split(bufio.ScanWords)
 
@@ -70,6 +68,14 @@ func tester() [][]int {
 			// }
 			fmt.Println("Time: ", duration)
 		}
+
+		averageTime /= 1000
+		averageNodesExplored /= 1000
+
+		fmt.Println("")
+		fmt.Println("----Final Results----")
+		fmt.Println("Average Computation Time: ", averageTime)
+		fmt.Println("Average Amount of Nodes Explored: ", averageNodesExplored)
 		file.Close()
 	}
 	elapsed := time.Since(masterTimer)
