@@ -1,4 +1,10 @@
+// // ideally takes a data set
+// // plays the positions
+// // evaluates time to sovle
+
 package main
+
+// // package main
 
 import (
 	"bufio"
@@ -9,12 +15,9 @@ import (
 	"time"
 )
 
-/*
-	Tester runs through the test files and computes the average time to run through
-	each position in the file and the average nodes explored per position
-*/
-func Tester() {
-	// fmt.Println("Test")
+func tester() [][]int {
+	masterTimer := time.Now()
+	var max time.Duration
 	// files := []string{"Test_L1_R1.txt", "Test_L1_R2.txt", "Test_L1_R3.txt", "Test_L2_R1.txt", "Test_L2_R2.txt", "Test_L3_R1.txt"}
 	files := []string{"Test_L2_R2.txt", "Test_L3_R1.txt"}
 	var averageTime time.Duration
@@ -31,36 +34,39 @@ func Tester() {
 		scanner.Split(bufio.ScanWords)
 
 		for scanner.Scan() {
-			positionString := scanner.Text()
-			pos := newPosition()
+			position := scanner.Text()
+			pos := createPosition()
 			sol := newSolver()
 
 			scanner.Scan()
-			expectedScore, error := strconv.Atoi(scanner.Text())
+			// fmt.Println("Position: ", position)
+			_, error := strconv.Atoi(scanner.Text())
 
 			if error != nil {
 				log.Fatal(error)
 			}
 
-			InitializeBoard(pos, positionString)
+			InitializeBoard(pos, position)
 
+			// fmt.Println("Position Bitstring: ", pos.position)
+			// fmt.Println("Mask Bitstring: ", pos.mask)
 			// start timer
 			timerStart := time.Now()
-			score := Negamax(pos, sol, -22, 22)
+			score := Solve(pos, sol)
 
 			duration := time.Since(timerStart)
-
-			averageNodesExplored += sol.nodesExplored
-			averageTime += duration
-
-			if score != expectedScore {
-				panic("Actual Score does not equal expected score!")
+			if duration > max {
+				max = duration
 			}
 
-			fmt.Println("----Final Results----")
-			fmt.Println("Score: ", score)
-			fmt.Println("Computation Time: ", duration)
-			fmt.Println("Amount of Nodes Explored: ", sol.nodesExplored)
+			// fmt.Println("")
+			// fmt.Println("----Final Results----")
+			fmt.Println("score: ", score)
+			// fmt.Println("expected score: ", expectedScore)
+			// if score != expectedScore {
+			// 	panic("Actual Score does not equal expected score!")
+			// }
+			fmt.Println("Time: ", duration)
 		}
 
 		averageTime /= 1000
@@ -72,4 +78,8 @@ func Tester() {
 		fmt.Println("Average Amount of Nodes Explored: ", averageNodesExplored)
 		file.Close()
 	}
+	elapsed := time.Since(masterTimer)
+	fmt.Println(elapsed / 1000)
+	fmt.Println(max)
+	return testData
 }

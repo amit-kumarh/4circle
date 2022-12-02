@@ -27,14 +27,25 @@ func InitializeBoard(pos *Position, seq string) {
 	}
 }
 
+func InitializeBoard(pos *Position, seq string) {
+	for i := 0; i < len(seq); i++ {
+		colByte := seq[i] - '1'
+		// fmt.Println(colByte)
+		col := int(colByte)
+		if col < 0 || col > 7 || !CanPlay(pos, col) || IsWinningMove(pos, col) {
+			return
+		}
+		Play(pos, col)
+	}
+}
 func Play(pos *Position, col int) {
 	pos.position ^= pos.mask
 	pos.mask |= pos.mask + bottomMask(col)
 	pos.moves++
 }
 
-func Key(pos uint64, mask uint64) uint64 {
-	return pos + mask
+func Key(pos *Position) uint64 {
+	return pos.position + pos.mask
 }
 
 func IsWinningMove(pos *Position, col int) bool {

@@ -1,13 +1,23 @@
 package main
 
+import lru "github.com/hashicorp/golang-lru/v2"
+
+// solver function takes the position and alpha-beta values and evaluates the score
+
+// what is the solver going to do:
+// takes a position and returns the score of that position
+// then algo will pick position with greatest score.
+
 const NUM_SPACES int = 42
 
 type Solver struct {
 	nodesExplored int
+	transpo       *lru.Cache[uint64, int]
 }
 
 func newSolver() *Solver {
-	return &Solver{0}
+	transpo, _ := lru.New[uint64, int](10000000) // store 10 million entries
+	return &Solver{0, transpo}
 }
 
 func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
@@ -30,7 +40,11 @@ func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
 	}
 
 	max := (41 - position.moves) / 2
-	// fmt.Println("Max score: ", max)
+	val, present := sol.transpo.Get(Key(position))
+	if present {
+		max = val
+	}
+
 	if beta > max {
 		beta = max
 		if alpha >= beta {
@@ -58,10 +72,28 @@ func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
 			}
 		}
 	}
+	sol.transpo.Add(Key(position), alpha)
 	return alpha
 }
 
-func Solve(position *Position, sol *Solver) int {
-	// check if you can win in one move
-	return 0
+func Solve(pos *Position, sol *Solver) int {
+	min := -(42 - pos.moves) / 2
+	max := (42 - pos.moves) / 2
+
+	for min < max {
+		med := min + (max-min)/2
+		if (med <= 0) && ((min / 2) < med) {
+			med = min / 2
+		} else if (med >= 0) && ((max / 2) > 2) {
+			med = max / 2
+		}
+
+		r := Negamax(pos, sol, med, med+1) // use a null depth window to know if score is greater than or less than med
+		if r <= med {
+			max = r
+		} else {
+			min = r
+		}
+	}
+	return min
 }
