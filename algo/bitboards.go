@@ -120,14 +120,18 @@ func ComputeWinningPosition(pos *Position) uint64 {
 	winningMovesBitmask |= shiftedPosition & (pos.position << 24)
 	winningMovesBitmask |= shiftedPosition & (pos.position >> 8)
 
-	uint64 boardMask = 000000000000000000000000000000000000000000
+	var boardMask uint64
+	boardMask = 000000000000000000000000000000000000000000
 	// to do finish function
 	winningMovesBitmask &= (boardMask ^ pos.mask)
 	// popcount on winning moves bitmask
-	for uint64 i := 0; winningMovesBitmask; i++ {
-		m &= (m - 1)
-	} 
+	var counter uint64
+	counter = 0
+	for counter < winningMovesBitmask {
+		winningMovesBitmask &= (winningMovesBitmask - 1)
+		counter++
+	}
 	// return popcount
 
-	return i
+	return counter
 }
