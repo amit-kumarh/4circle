@@ -7,8 +7,8 @@ type Position struct {
 }
 
 //export newPosition
-func newPosition(position uint64, mask uint64, moves int) *Position {
-	pos := &Position{position, mask, moves}
+func newPosition() *Position {
+	pos := &Position{0, 0, 0}
 	return pos
 }
 

@@ -3,5 +3,5 @@ def to_serial(col):
     # port = ""
     # s = serial.Serial(port)
     # s.write(col)
-    print(col)    
-to_serial(10)
+    return col 
+# to_serial(10)

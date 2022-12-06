@@ -2,13 +2,6 @@ package main
 
 // build using go build -buildmode=c-shared -o main.so
 
-import "C"
-
-//export getCol
-func getCol(col int) C.int {
-	return C.int(col)
-
-}
 func main() {
 	Tester()
 	// init structs for pos and solver
