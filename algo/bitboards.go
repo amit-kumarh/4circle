@@ -6,8 +6,9 @@ type Position struct {
 	moves    int
 }
 
-func newPosition() *Position {
-	pos := &Position{0, 0, 0}
+//export newPosition
+func newPosition(position uint64, mask uint64, moves int) *Position {
+	pos := &Position{position, mask, moves}
 	return pos
 }
 
@@ -88,4 +89,50 @@ func Aligned(pos uint64) bool {
 	}
 
 	return false
+}
+
+// returns the popcount of compute winning position
+func ComputeWinningPosition(pos *Position) uint64 {
+
+	// vertical wins
+	winningMovesBitmask := (pos.position << 1) & (pos.position << 2) & (pos.position << 3)
+
+	// horizontal win
+	// check for a win to the directly to the left
+	shiftedPosition := (pos.position << 7) & (pos.position << 14)
+	winningMovesBitmask |= shiftedPosition & (pos.position << 21)
+	// check for a win in the middle (1 1 0 1) where 0 is our winning space
+	winningMovesBitmask |= shiftedPosition & (pos.position >> 7)
+
+	// check for right wins
+	shiftedPosition = (pos.position >> 7) & (pos.position >> 14)
+	winningMovesBitmask |= shiftedPosition & (pos.position << 7)
+	winningMovesBitmask |= shiftedPosition & (pos.position >> 21)
+
+	// check for diagonal wins:
+
+	// downwards diagonal
+	shiftedPosition = (pos.position << 6) & (pos.position << 12)
+	winningMovesBitmask |= shiftedPosition & (pos.position << 18)
+	winningMovesBitmask |= shiftedPosition & (pos.position >> 6)
+
+	// upwards diagonal
+	shiftedPosition = (pos.position << 8) & (pos.position << 16)
+	winningMovesBitmask |= shiftedPosition & (pos.position << 24)
+	winningMovesBitmask |= shiftedPosition & (pos.position >> 8)
+
+	var boardMask uint64
+	boardMask = 000000000000000000000000000000000000000000
+	// to do finish function
+	winningMovesBitmask &= (boardMask ^ pos.mask)
+	// popcount on winning moves bitmask
+	var counter uint64
+	counter = 0
+	for counter < winningMovesBitmask {
+		winningMovesBitmask &= (winningMovesBitmask - 1)
+		counter++
+	}
+	// return popcount
+
+	return counter
 }

@@ -15,7 +15,7 @@ import (
 	"time"
 )
 
-func tester() [][]int {
+func Tester() {
 	masterTimer := time.Now()
 	var max time.Duration
 	// files := []string{"Test_L1_R1.txt", "Test_L1_R2.txt", "Test_L1_R3.txt", "Test_L2_R1.txt", "Test_L2_R2.txt", "Test_L3_R1.txt"}
@@ -35,7 +35,7 @@ func tester() [][]int {
 
 		for scanner.Scan() {
 			position := scanner.Text()
-			pos := createPosition()
+			pos := newPosition()
 			sol := newSolver()
 
 			scanner.Scan()
@@ -81,5 +81,5 @@ func tester() [][]int {
 	elapsed := time.Since(masterTimer)
 	fmt.Println(elapsed / 1000)
 	fmt.Println(max)
-	return testData
+	// return testData
 }

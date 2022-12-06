@@ -1,6 +1,7 @@
 package main
 
 import lru "github.com/hashicorp/golang-lru/v2"
+import "C"
 
 // solver function takes the position and alpha-beta values and evaluates the score
 
@@ -20,6 +21,7 @@ func newSolver() *Solver {
 	return &Solver{0, transpo}
 }
 
+//export Negamax
 func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
 	if alpha >= beta {
 		panic("Alpha must be less than Beta!")
