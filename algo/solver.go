@@ -97,3 +97,12 @@ func Solve(pos *Position, sol *Solver) int {
 	}
 	return min
 }
+
+func Score(pos *Position) [7]int {
+	for col := 0; col < 7; col++ {
+		test := pos
+		test.position |= (test.mask + bottomMask(col)) & columnMask(col)
+		score = ComputeWinningPosition(test)
+
+	}
+}
