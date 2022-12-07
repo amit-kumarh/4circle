@@ -1,7 +1,8 @@
 package main
 
 import lru "github.com/hashicorp/golang-lru/v2"
-import "C"
+
+// import "C"
 
 // solver function takes the position and alpha-beta values and evaluates the score
 

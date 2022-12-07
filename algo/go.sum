@@ -1,2 +1,4 @@
+github.com/go-python/cpy3 v0.2.0 h1:IQ8v6KOTGSvejROZ8BPCfVW4rSMOKfpVwDi6sKYuu1w=
+github.com/go-python/cpy3 v0.2.0/go.mod h1:W7F8SGWQv11501PYSj9d+NSv8U0/vWYa+FcMxBu4eqo=
 github.com/hashicorp/golang-lru/v2 v2.0.1 h1:5pv5N1lT1fjLg2VQ5KWc7kmucp2x/kvFOnxuVTqZ6x4=
 github.com/hashicorp/golang-lru/v2 v2.0.1/go.mod h1:QeFd9opnmA6QUJc5vARoKUSoFhyfM2/ZepoAG6RGpeM=
