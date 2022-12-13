@@ -34,17 +34,18 @@ func main() {
 		col := bestMove(position, solver)
 
 		// 4, run python function to move to column
-		pythonLine := "import serial; print(serial.to_serial(" + strconv.Itoa(col) + "))"
+		pythonLine := "import toPy; print(toPy.to_serial(" + strconv.Itoa(col) + "))"
 
 		// 5, repeat
 		fmt.Println("Running Python")
 		cmd := exec.Command("python3", "-c", pythonLine)
 		// fmt.Println(cmd.Args)
 
-		_, err := cmd.CombinedOutput()
+		out, err := cmd.CombinedOutput()
 		if err != nil {
 			fmt.Println(err)
 		}
+		fmt.Println("Python Output: ", out)
 		fmt.Println("Column: ", col+1)
 
 		if IsWinningMove(position, col) {
