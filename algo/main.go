@@ -10,7 +10,8 @@ func main() {
 	// init structs for pos and solver
 	position := newPosition()
 	solver := newSolver()
-	InitializeBoard(position, "2323445532")
+	posstring := "2323445532"
+	InitializeBoard(position, posstring)
 
 	var userInput int
 	for position.moves <= 49 {
@@ -23,12 +24,13 @@ func main() {
 
 		// check if user Input is winning move:
 		if IsWinningMove(position, userInput) {
-			fmt.Printf("%b", position.mask)
 			fmt.Println("Player Wins")
 			break
 		}
 		// 2, play user move with position bitboard
 		Play(position, userInput)
+		posstring += strconv.FormatInt(int64(userInput+1), 10)
+		fmt.Println(posstring)
 		// 3, run negamax and play and get column
 		fmt.Println("Running Negamax")
 		col := bestMove(position, solver)
@@ -46,11 +48,13 @@ func main() {
 			fmt.Println(err)
 		}
 		fmt.Println("Column: ", col+1)
+		posstring += strconv.FormatInt(int64(col+1), 10)
 
 		if IsWinningMove(position, col) {
 			fmt.Println("AI Wins")
 			break
 		}
 		Play(position, col)
+		fmt.Println(posstring)
 	}
 }
