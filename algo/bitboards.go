@@ -6,6 +6,9 @@ type Position struct {
 	moves    int
 }
 
+const BOARD_MASK uint64 = 0b0000000000000000111111011111101111110111111011111101111110111111
+const BOTTOM_MASK uint64 = 0b0000000000000000000001000000100000010000001000000100000010000001
+
 //export newPosition
 func newPosition() *Position {
 	pos := &Position{0, 0, 0}
@@ -14,6 +17,10 @@ func newPosition() *Position {
 
 func CanPlay(pos *Position, col int) bool {
 	return (pos.mask & topMask(col)) == 0
+}
+
+func possible(pos *Position) uint64 {
+	return (pos.mask + BOTTOM_MASK) & BOARD_MASK
 }
 
 func InitializeBoard(pos *Position, seq string) {
@@ -121,11 +128,16 @@ func ComputeWinningPosition(pos *Position) uint64 {
 	winningMovesBitmask |= shiftedPosition & (pos.position << 24)
 	winningMovesBitmask |= shiftedPosition & (pos.position >> 8)
 
-	var boardMask uint64
-	boardMask = 000000000000000000000000000000000000000000
-	// to do finish function
-	winningMovesBitmask &= (boardMask ^ pos.mask)
-	// popcount on winning moves bitmask
+	winningMovesBitmask &= (BOARD_MASK ^ pos.mask)
+	return winningMovesBitmask
+}
+
+func OpponentWinningMoves(pos *Position) uint64 {
+	return ComputeWinningPosition(&Position{pos.position ^ pos.mask, pos.mask, 1})
+}
+
+func NumWinningMoves(pos *Position) int {
+	winningMovesBitmask := ComputeWinningPosition(pos)
 	var counter uint64
 	counter = 0
 	for counter < winningMovesBitmask {
@@ -133,6 +145,5 @@ func ComputeWinningPosition(pos *Position) uint64 {
 		counter++
 	}
 	// return popcount
-
-	return counter
+	return int(counter)
 }

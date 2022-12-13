@@ -19,7 +19,8 @@ func Tester() {
 	masterTimer := time.Now()
 	var max time.Duration
 	// files := []string{"Test_L1_R1.txt", "Test_L1_R2.txt", "Test_L1_R3.txt", "Test_L2_R1.txt", "Test_L2_R2.txt", "Test_L3_R1.txt"}
-	files := []string{"Test_L2_R2.txt", "Test_L3_R1.txt"}
+	// files := []string{"testPosition.txt"}
+	files := []string{"Test_L2_R1.txt"}
 	var averageTime time.Duration
 	averageNodesExplored := 0
 
@@ -52,7 +53,8 @@ func Tester() {
 			// fmt.Println("Mask Bitstring: ", pos.mask)
 			// start timer
 			timerStart := time.Now()
-			score := Solve(pos, sol)
+			// score := Solve(pos, sol)
+			score := Negamax(pos, sol, -22, 22)
 
 			duration := time.Since(timerStart)
 			if duration > max {
@@ -62,24 +64,26 @@ func Tester() {
 			// fmt.Println("")
 			// fmt.Println("----Final Results----")
 			fmt.Println("score: ", score)
+			fmt.Println("nodes: ", sol.nodesExplored)
 			// fmt.Println("expected score: ", expectedScore)
 			// if score != expectedScore {
 			// 	panic("Actual Score does not equal expected score!")
 			// }
 			fmt.Println("Time: ", duration)
+			averageNodesExplored += sol.nodesExplored
 		}
 
 		averageTime /= 1000
-		averageNodesExplored /= 1000
 
 		fmt.Println("")
 		fmt.Println("----Final Results----")
 		fmt.Println("Average Computation Time: ", averageTime)
-		fmt.Println("Average Amount of Nodes Explored: ", averageNodesExplored)
+		fmt.Println("Average Amount of Nodes Explored: ", averageNodesExplored/1000)
 		file.Close()
 	}
 	elapsed := time.Since(masterTimer)
 	fmt.Println(elapsed / 1000)
 	fmt.Println(max)
+
 	// return testData
 }
