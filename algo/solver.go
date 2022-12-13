@@ -28,7 +28,7 @@ func newSolver() *Solver {
 }
 
 //export Negamax
-func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
+func Negamax(position *Position, sol *Solver, alpha int, beta int, depth int) int {
 	if alpha >= beta {
 		panic("Alpha must be less than Beta!")
 	}
@@ -52,6 +52,10 @@ func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
 		return -(42 - position.moves) / 2
 	}
 
+	if depth == 0 {
+		return NumWinningMoves(position) - NumOpponentWinningMoves(position)
+	}
+
 	max := (41 - position.moves) / 2
 	val, present := sol.transpo.Get(Key(position))
 	if present {
@@ -67,8 +71,6 @@ func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
 
 	columnOrder := ColumnOrder(position)
 
-	// columnOrder := []int{3, 4, 2, 5, 1, 6, 0}
-
 	// look for best possible score, save that score in var
 	for i := 0; i < 7; i++ {
 		// fmt.Println("In for loop")
@@ -78,7 +80,7 @@ func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
 			to_check := *position
 			Play(&to_check, columnOrder[i])
 
-			score := -Negamax(&to_check, sol, -beta, -alpha)
+			score := -Negamax(&to_check, sol, -beta, -alpha, depth-1)
 			// fmt.Println("Score: ", score)
 			// fmt.Println("Nodes explored: ", position.moves)
 
@@ -124,24 +126,26 @@ func NonLosingMoves(pos *Position) uint64 {
 	return possibleMask & ^(opponentWin >> 1)
 }
 
-func bestMove(pos *Position, sol *Solver) int {
+func bestMove(pos *Position, sol *Solver, depth int) int {
 	bestCol := 0
 	bestScore := -42
+	columnOrder := []int{3, 4, 2, 5, 1, 6, 0}
 	// look for best possible score, save that score in var
-	for i := 0; i < 7; i++ {
-		score := 0
-		if CanPlay(pos, i) && IsWinningMove(pos, i) {
-			// fmt.Println("Can win next move")
-			score = (43 - pos.moves) / 2
-		} else if CanPlay(pos, i) {
-			to_check := *pos
-			Play(&to_check, i)
-			score = -Negamax(&to_check, sol, -22, 22)
-		}
-		fmt.Println(i+1, score)
-		if score > bestScore {
-			bestScore = score
-			bestCol = i
+	for i := range columnOrder {
+		if CanPlay(pos, i) {
+			score := 0
+			if IsWinningMove(pos, i) {
+				score = (43 - pos.moves) / 2
+			} else {
+				to_check := *pos
+				Play(&to_check, i)
+				score = -Negamax(&to_check, sol, -22, 22, depth)
+			}
+			fmt.Println(i+1, score)
+			if score > bestScore {
+				bestScore = score
+				bestCol = i
+			}
 		}
 	}
 	return bestCol

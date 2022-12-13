@@ -54,7 +54,7 @@ func Tester() {
 			// start timer
 			timerStart := time.Now()
 			// score := Solve(pos, sol)
-			score := Negamax(pos, sol, -22, 22)
+			score := Negamax(pos, sol, -22, 22, 25)
 
 			duration := time.Since(timerStart)
 			if duration > max {

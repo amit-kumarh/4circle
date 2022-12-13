@@ -10,8 +10,8 @@ func main() {
 	// init structs for pos and solver
 	position := newPosition()
 	solver := newSolver()
-	posstring := "2323445532"
-	InitializeBoard(position, posstring)
+	posstring := ""
+	// InitializeBoard(position, posstring)
 
 	var userInput int
 	for position.moves <= 49 {
@@ -33,7 +33,7 @@ func main() {
 		fmt.Println(posstring)
 		// 3, run negamax and play and get column
 		fmt.Println("Running Negamax")
-		col := bestMove(position, solver)
+		col := bestMove(position, solver, 25)
 
 		// 4, run python function to move to column
 		pythonLine := "import serial; print(serial.to_serial(" + strconv.Itoa(col) + "))"
