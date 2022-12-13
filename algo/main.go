@@ -31,6 +31,13 @@ func main() {
 		// 3, run negamax and get column
 		fmt.Println("Running Negamax")
 		col := Negamax(position, solver, -42, 42) // NEED TO EDIT HERE
+		// Play Column for position bitboards -- if is winning move, break
+		if IsWinningMove(position, col) {
+			fmt.Println("You Win!")
+			break
+		}
+		Play(position, col)
+
 		// 4, run python function to move to column
 		pythonLine += strconv.Itoa(col) + "))"
 
