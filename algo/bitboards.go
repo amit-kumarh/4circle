@@ -136,6 +136,18 @@ func OpponentWinningMoves(pos *Position) uint64 {
 	return ComputeWinningPosition(&Position{pos.position ^ pos.mask, pos.mask, 1})
 }
 
+func NumOpponentWinningMoves(pos *Position) int {
+	winningMovesBitmask := OpponentWinningMoves(pos)
+	var counter uint64
+	counter = 0
+	for counter < winningMovesBitmask {
+		winningMovesBitmask &= (winningMovesBitmask - 1)
+		counter++
+	}
+	// return popcount
+	return int(counter)
+}
+
 func NumWinningMoves(pos *Position) int {
 	winningMovesBitmask := ComputeWinningPosition(pos)
 	var counter uint64

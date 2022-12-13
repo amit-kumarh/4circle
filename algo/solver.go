@@ -28,7 +28,7 @@ func newSolver() *Solver {
 }
 
 //export Negamax
-func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
+func Negamax(position *Position, sol *Solver, alpha int, beta int, depth int) int {
 	if alpha >= beta {
 		panic("Alpha must be less than Beta!")
 	}
@@ -39,9 +39,21 @@ func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
 		return 0
 	}
 
+	// checking if we can win next move
+	for i := 0; i <= 6; i++ {
+		if CanPlay(position, i) && IsWinningMove(position, i) {
+			// fmt.Println("Can win next move")
+			return (43 - position.moves) / 2
+		}
+	}
+
 	nextMoves := NonLosingMoves(position)
 	if nextMoves == 0 {
 		return -(42 - position.moves) / 2
+	}
+
+	if depth == 0 {
+		return NumWinningMoves(position) - NumOpponentWinningMoves(position)
 	}
 
 	max := (41 - position.moves) / 2
@@ -59,8 +71,6 @@ func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
 
 	columnOrder := ColumnOrder(position)
 
-	// columnOrder := []int{3, 4, 2, 5, 1, 6, 0}
-
 	// look for best possible score, save that score in var
 	for i := 0; i < 7; i++ {
 		// fmt.Println("In for loop")
@@ -70,7 +80,7 @@ func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
 			to_check := *position
 			Play(&to_check, columnOrder[i])
 
-			score := -Negamax(&to_check, sol, -beta, -alpha)
+			score := -Negamax(&to_check, sol, -beta, -alpha, depth-1)
 			// fmt.Println("Score: ", score)
 			// fmt.Println("Nodes explored: ", position.moves)
 
@@ -84,28 +94,6 @@ func Negamax(position *Position, sol *Solver, alpha int, beta int) int {
 	}
 	sol.transpo.Add(Key(position), alpha)
 	return alpha
-}
-
-func Solve(pos *Position, sol *Solver) int {
-	min := -(42 - pos.moves) / 2
-	max := (42 - pos.moves) / 2
-
-	for min < max {
-		med := min + (max-min)/2
-		if (med <= 0) && ((min / 2) < med) {
-			med = min / 2
-		} else if (med >= 0) && ((max / 2) > 2) {
-			med = max / 2
-		}
-
-		r := Negamax(pos, sol, med, med+1) // use a null depth window to know if score is greater than or less than med
-		if r <= med {
-			max = r
-		} else {
-			min = r
-		}
-	}
-	return min
 }
 
 func ColumnOrder(pos *Position) []int {
@@ -138,22 +126,22 @@ func NonLosingMoves(pos *Position) uint64 {
 	return possibleMask & ^(opponentWin >> 1)
 }
 
-func bestMove(position *Position, sol *Solver) int {
-	nextMoves := NonLosingMoves(position)
-	if nextMoves == 0 {
-		return 1
-	}
-
+func bestMove(pos *Position, sol *Solver, depth int) int {
 	bestCol := 0
 	bestScore := -42
+	columnOrder := []int{3, 4, 2, 5, 1, 6, 0}
 	// look for best possible score, save that score in var
-	for i := 0; i < 7; i++ {
-		if (nextMoves & columnMask(i)) > 0 {
-			to_check := *position
-			Play(&to_check, i)
-
-			score := -Negamax(&to_check, sol, -22, 22)
-			fmt.Println(score)
+	for i := range columnOrder {
+		if CanPlay(pos, i) {
+			score := 0
+			if IsWinningMove(pos, i) {
+				score = (43 - pos.moves) / 2
+			} else {
+				to_check := *pos
+				Play(&to_check, i)
+				score = -Negamax(&to_check, sol, -22, 22, depth)
+			}
+			fmt.Println(i+1, score)
 			if score > bestScore {
 				bestScore = score
 				bestCol = i
