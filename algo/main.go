@@ -33,7 +33,7 @@ func main() {
 		fmt.Println(posstring)
 		// 3, run negamax and play and get column
 		fmt.Println("Running Negamax")
-		col := bestMove(position, solver, 25)
+		col := bestMove(position, solver, 20)
 
 		// 4, run python function to move to column
 		pythonLine := "import toPy; print(toPy.to_serial(" + strconv.Itoa(col) + "))"
@@ -42,12 +42,11 @@ func main() {
 		fmt.Println("Running Python")
 		cmd := exec.Command("python3", "-c", pythonLine)
 		// fmt.Println(cmd.Args)
-
 		out, err := cmd.CombinedOutput()
 		if err != nil {
 			fmt.Println(err)
 		}
-		fmt.Println("Python Output: ", out)
+		fmt.Println(string(out))
 		fmt.Println("Column: ", col+1)
 		posstring += strconv.FormatInt(int64(col+1), 10)
 
