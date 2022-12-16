@@ -1,1 +1,8 @@
 # Reflection:
+
+We came into this project knowing that it would be difficult. With the lack of a mechanical engineer on our team, and our combined lack of experience creating mechanical systems, we understood that we'd probably face difficulties designing and building the mechanical portion of our project. Despite this, however, we came together, with Norah stepping up as our mechanical lead and doing a hard push at the beginning of our project to complete a mechanical design in case major changes had to be made as the project went on. Unfortunately, we ran into more challenges as the project processed, and Isa ended up taking over the mechanical system fabrication and design for the rest of the project. Despite this shift in roles, we were able to successfully fabricate and create our mechanical system!
+
+Over in our software side, we faced challenges with optimizing our algorithm. While the Negamax algorithm wasn't hard to code in itself, we ran into trouble using optimization techniques like bitboards. It turns out, it is really hard to visualize bitboards, so when debugging any issues in our code, we had to actually draw out the bitboards and perform any operations by hand to see what our expected results were and then compare them to what our actually results were. While this process was tedious, it did help us find errors that we would've otherwise missed.
+**Amit add whatever else you think is necessary**
+
+**Diana add electrical reflection**
