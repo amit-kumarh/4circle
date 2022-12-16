@@ -11,4 +11,6 @@ out what needed to be done in order to get a working machiene by demo day.
 
 ## Diana Garcia
 
+Diana is thinking about majoring in electrical engineering at Olin, however she is currently testing the waters with all the different engineering majors that Olin has to offer. She is currently taking a mechanical engineering class called Transport Phenomena which focuses on the movement of fluids which she really enjoys. Through this project Diana has been able to improve her computing skills by developing the code that controls and integrates the electrical system that she also designed.
+
 ## Norah Evans
